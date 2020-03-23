@@ -11,4 +11,6 @@ import org.morningyet.myvhr2020.model.MenuExample;
 public interface MenuMapper {
 
     List<Menu> getAllMenusWithRole();
+
+    List<Menu> getMenuById(Integer Hrid);
 }

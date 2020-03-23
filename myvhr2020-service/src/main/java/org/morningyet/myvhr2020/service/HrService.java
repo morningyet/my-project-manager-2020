@@ -38,6 +38,7 @@ public class HrService implements UserDetailsService {
         if (hr == null) {
             throw new UsernameNotFoundException("用户名不存在!");
         }
+        //也可以选择在这里为hr注入roles
         return hr;
     }
 }

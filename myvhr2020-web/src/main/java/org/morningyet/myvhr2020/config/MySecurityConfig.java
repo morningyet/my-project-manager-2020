@@ -92,6 +92,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                         PrintWriter writer = resp.getWriter();
                         Hr principal = (Hr) authentication.getPrincipal();//这里強转为hr类  不转似乎也没有影响
                         principal.setPassword("不予显示");
+                        //将用户信息回写到前端
                         RespBean respBean = RespBean.ok("登录成功", principal);
                         String s = new ObjectMapper().writeValueAsString(respBean);
                         writer.write(s);
@@ -129,7 +130,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse resp, Authentication authentication) throws IOException, ServletException {
                         resp.setContentType("application/json;charset=utf-8");
                         PrintWriter writer = resp.getWriter();
-                        RespBean respBean = RespBean.ok("注销成功!");
+                        RespBean respBean = RespBean.ok("注销成功!~");
                         String s = new ObjectMapper().writeValueAsString(respBean);
                         writer.write(s);
                         writer.flush();
@@ -142,6 +143,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()//取消屏蔽postman一类构造请求
                 .exceptionHandling()
                 //没有认证时，在这里处理结果，不要重定向
+                //重定向会导致前端跳转时出现跨域的问题
+                //只发送错误信息,由前端的路由守卫处理即可
                 .authenticationEntryPoint(new AuthenticationEntryPoint() {
                     @Override
                     public void commence(HttpServletRequest req, HttpServletResponse resp, AuthenticationException authException) throws IOException, ServletException {
